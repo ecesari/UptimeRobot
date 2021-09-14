@@ -6,8 +6,13 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
+using System.IO;
+using AutoMapper;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.Extensions.Logging;
 using Uptime_Robot.Data;
+using Uptime_Robot.Data.Entities;
+using Uptime_Robot.Infrastructure;
 using Uptime_Robot.Models;
 using Uptime_Robot.Services;
 
@@ -32,6 +37,15 @@ namespace Uptime_Robot
 				.AddEntityFrameworkStores<ApplicationDbContext>();
 			services.AddControllersWithViews();
             services.AddRazorPages();
+
+            // Auto Mapper Configurations
+            var mapperConfig = new MapperConfiguration(mc =>
+            {
+	            mc.AddProfile(new MapperConfig());
+            });
+
+            IMapper mapper = mapperConfig.CreateMapper();
+            services.AddSingleton(mapper);
 
 
             #region Identity
@@ -79,8 +93,11 @@ namespace Uptime_Robot
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
+	        var path = Directory.GetCurrentDirectory();
+	        loggerFactory.AddFile($"{path}\\Logs\\Log.txt");
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

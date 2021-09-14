@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -8,7 +6,6 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Uptime_Robot.Models;
 
 namespace Uptime_Robot.Services
 {
@@ -58,7 +55,7 @@ namespace Uptime_Robot.Services
                         var monitorIsUp = checkingResponse.IsSuccessStatusCode;
                         if (!monitorIsUp)
                         {
-                            await emailService.SendEmailAsync(monitor.Owner.Email, $"{monitor.Header} is down!", $"Uh oh! It seems like your monitor is down. Your monitor named {monitor.Header} at address is down. Current time is {DateTime.Now}");
+                            await emailService.SendEmailAsync(monitor.OwnerEmail, $"{monitor.Header} is down!", $"Uh oh! It seems like your monitor is down. Your monitor named {monitor.Header} at address is down. Current time is {DateTime.Now}");
                             //send e-mail
 
                         }

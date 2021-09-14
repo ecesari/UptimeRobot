@@ -1,7 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using Uptime_Robot.Data.Entities;
 using Uptime_Robot.Models;
 using Uptime_Robot.Services;
 
@@ -22,15 +23,13 @@ namespace Uptime_Robot.Controllers
 		// GET: Monitor
 		public async Task<IActionResult> Index()
 		{
-			//TODO:Userid to monitorservice
-			//TOOD: make monitorservice async
-			var user = await _userManager.GetUserAsync(User);
-			var monitors = await _monitorService.GetAllMonitors(user);
+			var userId = (await _userManager.GetUserAsync(User)).Id;
+			var monitors = await _monitorService.GetAllMonitors(userId);
 			return View(monitors);
 		}
 
 		// GET: Monitor/Details/5
-		public async Task<IActionResult> Details(int? id)
+		public async Task<IActionResult> Details(Guid? id)
 		{
 			if (id == null)
 			{
@@ -39,7 +38,7 @@ namespace Uptime_Robot.Controllers
 
 			//var monitor = await _context.Monitors
 			//    .FirstOrDefaultAsync(m => m.Id == id);
-			var monitor = await _monitorService.GetMonitor((int)id);
+			var monitor = await _monitorService.GetMonitor((Guid)id);
 			if (monitor == null)
 			{
 				return NotFound();
@@ -59,28 +58,27 @@ namespace Uptime_Robot.Controllers
 		// more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Create([Bind("Id,Header,Url,Interval")] Monitor monitor)
+		public async Task<IActionResult> Create([Bind("Id,Header,Url,Interval")] MonitorViewModel monitor)
 		{
-			//add validation
-			//TODO:monitor to monitordto
+			//TODO:add validation
 			if (ModelState.IsValid)
 			{
-				var user = await _userManager.GetUserAsync(User);
-				await _monitorService.AddMonitor(monitor, user);
+				var userId = (await _userManager.GetUserAsync(User)).Id;
+				await _monitorService.AddMonitor(monitor, userId);
 				return RedirectToAction(nameof(Index));
 			}
 			return View(monitor);
 		}
 
 		// GET: Monitor/Edit/5
-		public async Task<IActionResult> Edit(int? id)
+		public async Task<IActionResult> Edit(Guid? id)
 		{
 			if (id == null)
 			{
 				return NotFound();
 			}
 
-			var monitor = await _monitorService.GetMonitor((int)id);
+			var monitor = await _monitorService.GetMonitor((Guid) id);
 			if (monitor == null)
 			{
 				return NotFound();
@@ -93,7 +91,7 @@ namespace Uptime_Robot.Controllers
 		// more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Edit(int id, [Bind("Id,Header,Url,Interval")] Monitor monitor)
+		public async Task<IActionResult> Edit(Guid id, [Bind("Id,Header,Url,Interval")] MonitorViewModel monitor)
 		{
 			if (id != monitor.Id)
 			{
@@ -126,14 +124,14 @@ namespace Uptime_Robot.Controllers
 		}
 
 		//GET: Monitor/Delete/5
-		public async Task<IActionResult> Delete(int? id)
+		public async Task<IActionResult> Delete(Guid? id)
 		{
 			if (id == null)
 			{
 				return NotFound();
 			}
 
-			var monitor = await _monitorService.GetMonitor((int) id);
+			var monitor = await _monitorService.GetMonitor((Guid) id);
 			if (monitor == null)
 			{
 				return NotFound();

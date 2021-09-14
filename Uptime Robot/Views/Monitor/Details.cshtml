@@ -1,4 +1,4 @@
-﻿@model Uptime_Robot.Models.Monitor
+﻿@model MonitorViewModel
 
 @{
     ViewData["Title"] = "Details";
@@ -29,6 +29,10 @@
             @Html.DisplayFor(model => model.Interval)
         </dd>
     </dl>
+    @foreach (var monitor in Model.OwnerEmail)
+    {
+
+    }
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |

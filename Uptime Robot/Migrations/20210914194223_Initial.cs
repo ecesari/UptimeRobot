@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Uptime_Robot.Migrations
 {
-    public partial class CreateInitial : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -45,21 +45,6 @@ namespace Uptime_Robot.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "MailTemplates",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Subject = table.Column<string>(nullable: true),
-                    Body = table.Column<string>(nullable: true),
-                    MailType = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_MailTemplates", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -172,13 +157,14 @@ namespace Uptime_Robot.Migrations
                 name: "Monitors",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(nullable: false),
+                    CreateDate = table.Column<DateTime>(nullable: false),
+                    UpdateDate = table.Column<DateTime>(nullable: true),
                     Header = table.Column<string>(nullable: true),
                     Url = table.Column<string>(nullable: true),
                     Interval = table.Column<int>(nullable: false),
-                    OwnerId = table.Column<string>(nullable: true),
-                    IsActive = table.Column<bool>(nullable: false)
+                    IsActive = table.Column<bool>(nullable: false),
+                    OwnerId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -197,7 +183,7 @@ namespace Uptime_Robot.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    MonitorId = table.Column<int>(nullable: false),
+                    MonitorId = table.Column<Guid>(nullable: false),
                     IsUp = table.Column<bool>(nullable: false),
                     TimeStamp = table.Column<DateTime>(nullable: false)
                 },
@@ -278,9 +264,6 @@ namespace Uptime_Robot.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
-
-            migrationBuilder.DropTable(
-                name: "MailTemplates");
 
             migrationBuilder.DropTable(
                 name: "MonitorLogs");

@@ -1,9 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using Uptime_Robot.Models;
+using Uptime_Robot.Data.Entities;
 
 namespace Uptime_Robot.Data
 {
@@ -16,7 +13,16 @@ namespace Uptime_Robot.Data
         public DbSet<Monitor> Monitors { get; set; }
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
         public DbSet<MonitorLog> MonitorLogs { get; set; }
-        public DbSet<MailTemplate> MailTemplates { get; set; }
 
+        //protected override void OnModelCreating(ModelBuilder builder)
+        //{
+	       // modelBuilder.Entity<YourEntity>().Property(x => x.Id).HasDefaultValueSql("NEWID()");
+
+	       // modelBuilder.Entity<User>().HasData(
+		      //  new User() { Id = Guid.NewGuid(), Email = "Mubeen@gmail.com", Name = "Mubeen", Password = "123123" },
+		      //  new User() { Id = Guid.NewGuid(), Email = "Tahir@gmail.com", Name = "Tahir", Password = "321321" },
+		      //  new User() { Id = Guid.NewGuid(), Email = "Cheema@gmail.com", Name = "Cheema", Password = "123321" }
+	       // );
+        //}
     }
 }

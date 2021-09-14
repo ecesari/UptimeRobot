@@ -21,6 +21,13 @@ namespace Uptime_Robot
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
+                })
+                .ConfigureLogging(logging =>
+                {
+	                logging.ClearProviders();
+	                logging.AddConsole();
+
                 });
+
     }
 }

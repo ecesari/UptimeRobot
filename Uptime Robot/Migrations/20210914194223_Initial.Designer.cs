@@ -10,8 +10,8 @@ using Uptime_Robot.Data;
 namespace Uptime_Robot.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210914141735_CreateInitial")]
-    partial class CreateInitial
+    [Migration("20210914194223_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -227,33 +227,14 @@ namespace Uptime_Robot.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("Uptime_Robot.Models.MailTemplate", b =>
+            modelBuilder.Entity("Uptime_Robot.Data.Entities.Monitor", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Body")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("MailType")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Subject")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("MailTemplates");
-                });
-
-            modelBuilder.Entity("Uptime_Robot.Models.Monitor", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Header")
                         .HasColumnType("nvarchar(max)");
@@ -267,6 +248,9 @@ namespace Uptime_Robot.Migrations
                     b.Property<string>("OwnerId")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<DateTime?>("UpdateDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Url")
                         .HasColumnType("nvarchar(max)");
 
@@ -277,7 +261,7 @@ namespace Uptime_Robot.Migrations
                     b.ToTable("Monitors");
                 });
 
-            modelBuilder.Entity("Uptime_Robot.Models.MonitorLog", b =>
+            modelBuilder.Entity("Uptime_Robot.Data.Entities.MonitorLog", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -287,8 +271,8 @@ namespace Uptime_Robot.Migrations
                     b.Property<bool>("IsUp")
                         .HasColumnType("bit");
 
-                    b.Property<int>("MonitorId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("MonitorId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("TimeStamp")
                         .HasColumnType("datetime2");
@@ -300,7 +284,7 @@ namespace Uptime_Robot.Migrations
                     b.ToTable("MonitorLogs");
                 });
 
-            modelBuilder.Entity("Uptime_Robot.Models.ApplicationUser", b =>
+            modelBuilder.Entity("Uptime_Robot.Data.Entities.ApplicationUser", b =>
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
 
@@ -358,16 +342,16 @@ namespace Uptime_Robot.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Uptime_Robot.Models.Monitor", b =>
+            modelBuilder.Entity("Uptime_Robot.Data.Entities.Monitor", b =>
                 {
-                    b.HasOne("Uptime_Robot.Models.ApplicationUser", "Owner")
+                    b.HasOne("Uptime_Robot.Data.Entities.ApplicationUser", "Owner")
                         .WithMany("Monitors")
                         .HasForeignKey("OwnerId");
                 });
 
-            modelBuilder.Entity("Uptime_Robot.Models.MonitorLog", b =>
+            modelBuilder.Entity("Uptime_Robot.Data.Entities.MonitorLog", b =>
                 {
-                    b.HasOne("Uptime_Robot.Models.Monitor", "Monitor")
+                    b.HasOne("Uptime_Robot.Data.Entities.Monitor", "Monitor")
                         .WithMany("Logs")
                         .HasForeignKey("MonitorId")
                         .OnDelete(DeleteBehavior.Cascade)
