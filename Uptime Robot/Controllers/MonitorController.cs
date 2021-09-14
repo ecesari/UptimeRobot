@@ -35,9 +35,6 @@ namespace Uptime_Robot.Controllers
 			{
 				return NotFound();
 			}
-
-			//var monitor = await _context.Monitors
-			//    .FirstOrDefaultAsync(m => m.Id == id);
 			var monitor = await _monitorService.GetMonitor((Guid)id);
 			if (monitor == null)
 			{
@@ -100,24 +97,7 @@ namespace Uptime_Robot.Controllers
 
 			if (ModelState.IsValid)
 			{
-				//try
-				//{
 				await _monitorService.UpdateMonitor(monitor, id);
-
-				//_context.Update(monitor);
-				//await _context.SaveChangesAsync();
-				//}
-				//catch (DbUpdateConcurrencyException)
-				//{
-				//    if (!MonitorExists(monitor.Id))
-				//    {
-				//        return NotFound();
-				//    }
-				//    else
-				//    {
-				//        throw;
-				//    }
-				//}
 				return RedirectToAction(nameof(Index));
 			}
 			return View(monitor);
@@ -143,7 +123,7 @@ namespace Uptime_Robot.Controllers
 		// POST: Monitor/Delete/5
 		[HttpPost, ActionName("Delete")]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> DeleteConfirmed(int id)
+		public async Task<IActionResult> DeleteConfirmed(Guid id)
 		{
 
 			await _monitorService.DeleteWebsiteById(id);

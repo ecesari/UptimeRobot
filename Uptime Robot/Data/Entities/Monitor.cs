@@ -8,7 +8,6 @@ namespace Uptime_Robot.Data.Entities
         public string Header { get; set; }
         public string Url { get; set; }
         public int Interval { get; set; }
-        public bool IsActive { get; set; }
         public string OwnerId { get; set; }
 
         public virtual ApplicationUser Owner { get; set; }

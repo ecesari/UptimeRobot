@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Uptime_Robot.Data;
 using Uptime_Robot.Data.Entities;
@@ -14,12 +13,9 @@ namespace Uptime_Robot.Services
 	{
 		Task<List<MonitorViewModel>> GetAllMonitors(string userId);
 		Task<IEnumerable<MonitorViewModel>> GetAllMonitors();
-		//IEnumerable<MonitorViewModel> GetEnabledWebsites();
 		Task AddLog(Guid monitorId, bool isUp);
 		Task<MonitorViewModel> GetMonitor(Guid id);
-		//Task<IEnumerable<UptimeRecord>> GetUptimeRecordsByUrl(string url);
-		//Task<IEnumerable<UptimeRecord>> GetAllUptimeRecords();
-		Task DeleteWebsiteById(int id);
+		Task DeleteWebsiteById(Guid id);
 		Task AddMonitor(MonitorViewModel monitor, string userId);
 		Task UpdateMonitor(MonitorViewModel id, Guid id1);
 	}
@@ -38,7 +34,7 @@ namespace Uptime_Robot.Services
 
 		public async Task<List<MonitorViewModel>> GetAllMonitors(string userId)
 		{
-			var monitors = await _context.Monitors.Where(x => x.OwnerId == userId).ToListAsync();
+			var monitors = await _context.Monitors.Include(x => x.Logs).Where(x => x.OwnerId == userId && x.IsActive).ToListAsync();
 			var list = monitors.Select(monitor => _mapper.Map<MonitorViewModel>(monitor)).ToList();
 
 			return list;
@@ -46,7 +42,7 @@ namespace Uptime_Robot.Services
 
 		public async Task<IEnumerable<MonitorViewModel>> GetAllMonitors()
 		{
-			var monitors = await _context.Monitors.Include(x => x.Owner).AsNoTracking().ToListAsync();
+			var monitors = await _context.Monitors.Where(x=>x.IsActive).Include(x => x.Owner).AsNoTracking().ToListAsync();
 			var list = monitors.Select(monitor => _mapper.Map<MonitorViewModel>(monitor)).ToList();
 			return list;
 		}
@@ -67,11 +63,13 @@ namespace Uptime_Robot.Services
 		public async Task<MonitorViewModel> GetMonitor(Guid id)
 		{
 			var monitor = await _context.Monitors.Include(x=>x.Logs).AsNoTracking().FirstOrDefaultAsync(m => m.Id == id);
+			monitor.Logs = monitor.Logs.OrderByDescending(x => x.TimeStamp).Where(x =>
+				x.TimeStamp > DateTime.Now.AddDays(-1) && x.TimeStamp <= DateTime.Now);
 			var vm = _mapper.Map<MonitorViewModel>(monitor);
 			return vm;
 		}
 
-		public async Task DeleteWebsiteById(int id)
+		public async Task DeleteWebsiteById(Guid id)
 		{
 			var monitor = await _context.Monitors.FindAsync(id);
 			monitor.IsActive = false;
@@ -83,6 +81,8 @@ namespace Uptime_Robot.Services
 		{
 			var monitor = _mapper.Map<Monitor>(monitorViewModel);
 			monitor.OwnerId = userId;
+			monitor.IsActive = true;
+			monitor.CreateDate = DateTime.Now;
 			_context.Add(monitor);
 			await _context.SaveChangesAsync();
 		}
@@ -91,11 +91,11 @@ namespace Uptime_Robot.Services
 		{
 			try
 			{
-				//var monitor = _mapper.Map<Monitor>(monitorViewModel);
 				var monitor = await _context.Monitors.FindAsync(monitorViewModel.Id);
 				monitor.Header = monitorViewModel.Header;
 				monitor.Interval = monitorViewModel.Interval;
 				monitor.Url = monitorViewModel.Url;
+				monitor.UpdateDate = DateTime.Now;
 				_context.Update(monitor);
 				await _context.SaveChangesAsync();
 			}

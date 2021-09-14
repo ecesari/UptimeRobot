@@ -29,10 +29,49 @@
             @Html.DisplayFor(model => model.Interval)
         </dd>
     </dl>
-    @foreach (var monitor in Model.OwnerEmail)
-    {
+    <br/>
+    <h2>Uptime For Last 24 Hours</h2>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>
+                #
+            </th>
+            <th>
+               Monitor Status
+            </th>
+            <th>
+                Time Stamp
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        @{int i = 0;}
 
-    }
+        @foreach (var item in Model.Logs)
+        {
+            i++;
+            <tr>
+                <td>
+                    @i
+                </td>
+                <td>
+                    @if (item.IsUp)
+                    {
+                        <span>UP</span>
+                    }
+                    else
+                    {
+                        <span>DOWN</span>
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TimeStamp)
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |

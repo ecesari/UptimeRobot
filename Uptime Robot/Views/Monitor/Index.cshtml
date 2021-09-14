@@ -21,6 +21,12 @@
             <th>
                 @Html.DisplayNameFor(model => model.Interval)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TotalUptimePercentageValue)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Last24HrsUptimePercentageValue)
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -35,6 +41,12 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Interval)
+            </td>
+            <td>
+                % @Html.DisplayFor(modelItem => item.TotalUptimePercentageValue)
+            </td>
+            <td>
+                % @Html.DisplayFor(modelItem => item.Last24HrsUptimePercentageValue)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
