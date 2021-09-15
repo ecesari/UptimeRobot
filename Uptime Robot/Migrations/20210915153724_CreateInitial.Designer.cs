@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Uptime_Robot.Data;
 
-namespace Uptime_Robot.Data.Migrations
+namespace Uptime_Robot.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210915085632_001")]
-    partial class _001
+    [Migration("20210915153724_CreateInitial")]
+    partial class CreateInitial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
