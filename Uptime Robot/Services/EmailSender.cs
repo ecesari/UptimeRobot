@@ -30,7 +30,7 @@ namespace Uptime_Robot.Services
             var client = new SendGridClient(apiKey);
             var msg = new SendGridMessage()
             {
-                From = new EmailAddress("iobojbssivqegrovat@uivvn.net", "Uptime Robot"),
+                From = new EmailAddress("ivfwfrbqnyrxmlaxyu@tbbyt.net", "Uptime Robot"),
                 Subject = subject,
                 PlainTextContent = message,
                 HtmlContent = message
