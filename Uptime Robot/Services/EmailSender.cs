@@ -22,7 +22,7 @@ namespace Uptime_Robot.Services
 
 	    public Task SendEmailAsync(string email, string subject, string message)
         {
-            return Execute(Options.SendGridKey, subject, message, email);
+            return Execute(Options.SendGridKey ?? "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", subject, message, email);
         }
 
         public async Task<Response> Execute(string apiKey, string subject, string message, string email)
