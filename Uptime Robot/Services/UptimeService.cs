@@ -36,6 +36,8 @@ namespace Uptime_Robot.Services
 		//Check all monitors according to their interval, send notifications if necessary
 		private async void DoWork(object state)
 		{
+            Interlocked.Increment(ref _executionCount);
+
 			using (var scope = _serviceProvider.CreateScope())
 			{
 				var dataService = scope.ServiceProvider.GetService<IMonitorService>();
@@ -48,7 +50,6 @@ namespace Uptime_Robot.Services
 					if (_executionCount % monitor.Interval == 0)
 					{
 						var monitorIsUp = false;
-						var monitoringSuccessful = false;
 
 						try
 						{
@@ -58,13 +59,11 @@ namespace Uptime_Robot.Services
 							var client = new HttpClient();
 							var checkingResponse = await client.GetAsync(monitor.Url);
 							monitorIsUp = checkingResponse.IsSuccessStatusCode;
-							monitoringSuccessful = true;
 
 						}
 						catch (Exception ex)
 						{
 							monitorIsUp = false;
-							monitoringSuccessful = false;
 
 							_logger.LogError(
 								$"There was an error trying to connect to the monitor. The exception message is: {ex.Message}",
@@ -74,7 +73,7 @@ namespace Uptime_Robot.Services
 						{
 							//add a history log
 							await dataService.AddLog(monitor.Id, monitorIsUp);
-							if (!monitorIsUp && monitoringSuccessful)
+							if (!monitorIsUp)
 							{
 								//the monitor is down, send a notification to the owner
 								_logger.LogInformation($"{monitor.Url} owned by {monitor.OwnerEmail} is down, sending an e-mail", DateTime.Now);
