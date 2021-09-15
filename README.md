@@ -9,10 +9,18 @@ You can easily install and run this app by following these instructions.
 - Using package manager console or powershell enter Update-Database command to create the database
 
 	  Update-Database
+	  
+- The default connection string is your local server, you can change this in the appsettings.json file
 
+	  Server=(localdb)\\mssqllocaldb;Database=UptimeRobotDB;Trusted_Connection=True;MultipleActiveResultSets=true
+	  
 - Run the project
 - Register 
-- Add your monitors!
+- Add the details of your monitor such as its interval(frequency), name and URL
+
+That's it! The application runs the service that checks your monitors and alerts you if they are down
+
+
 
 # Technologies and Dependencies
 The project is written in **C#** with **.Net Core.**
