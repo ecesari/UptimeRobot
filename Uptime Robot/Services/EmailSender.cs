@@ -17,8 +17,7 @@ namespace Uptime_Robot.Services
 	    {
 		    _logger = logger;
 		    Options = optionsAccessor.Value;
-
-        }
+	    }
 
 
 	    public Task SendEmailAsync(string email, string subject, string message)

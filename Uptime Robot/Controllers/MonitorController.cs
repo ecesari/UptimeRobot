@@ -126,7 +126,7 @@ namespace Uptime_Robot.Controllers
 		public async Task<IActionResult> DeleteConfirmed(Guid id)
 		{
 
-			await _monitorService.DeleteWebsiteById(id);
+			await _monitorService.DeleteMonitor(id);
 			return RedirectToAction(nameof(Index));
 		}
 

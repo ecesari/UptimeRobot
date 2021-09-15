@@ -10,6 +10,7 @@ namespace Uptime_Robot.Infrastructure
 	{
 		public MapperConfig()
 		{
+			//Monitor mapper
 			CreateMap<Monitor, MonitorViewModel>()
 				.ForMember(dest => dest.OwnerEmail, opt => opt.MapFrom(src => src.Owner.Email))
 				.ForMember(dest => dest.TotalUptimePercentageValue, opt => opt.MapFrom(src => src.Logs.Count() > 0 ? (int)Math.Round((double)(100 * src.Logs.Count(x => x.IsUp)) / src.Logs.Count()) : 0))
@@ -17,6 +18,7 @@ namespace Uptime_Robot.Infrastructure
 			CreateMap<MonitorViewModel, Monitor>()
 				.ForMember(dest => dest.IsActive, opt => opt.MapFrom(src => true)); 
 
+			//Monitor Log Mapper
 			CreateMap<MonitorLog, MonitorLogViewModel>();
 			CreateMap<MonitorLogViewModel, MonitorLog>();
 
