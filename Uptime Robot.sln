@@ -7,6 +7,20 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Uptime Robot", "Uptime Robo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UptimeRobotTest", "UptimeRobotTest\UptimeRobotTest.csproj", "{5AEA10C7-15A8-4FDA-9C49-9FA7069ED845}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Business Layer", "Business Layer", "{146275F1-2779-497D-906A-4E47A52F995B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation Layer", "Presentation Layer", "{D752EB7F-819B-4051-9ECA-A3EAAFA70625}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data Layer", "Data Layer", "{45381100-ACE8-4F75-B47D-5A0232746E79}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Service Layer", "Service Layer", "{94C0F2B4-D26C-4AC2-891D-8965EC062198}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test Layer", "Test Layer", "{CC1301A5-5452-4C03-9BAD-2129AD28AC48}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UptimeRobot.Business.Interfaces", "UptimeRobot.Business.Interfaces\UptimeRobot.Business.Interfaces.csproj", "{A7E50D88-7146-48DB-95C5-C7979FA50988}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UptimeRobot.Data.EF", "UptimeRobot.Data.EF\UptimeRobot.Data.EF.csproj", "{E8D2B85A-B7F2-47A4-ACCC-E43DBA60F2EA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,9 +35,23 @@ Global
 		{5AEA10C7-15A8-4FDA-9C49-9FA7069ED845}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5AEA10C7-15A8-4FDA-9C49-9FA7069ED845}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5AEA10C7-15A8-4FDA-9C49-9FA7069ED845}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A7E50D88-7146-48DB-95C5-C7979FA50988}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7E50D88-7146-48DB-95C5-C7979FA50988}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A7E50D88-7146-48DB-95C5-C7979FA50988}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A7E50D88-7146-48DB-95C5-C7979FA50988}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E8D2B85A-B7F2-47A4-ACCC-E43DBA60F2EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E8D2B85A-B7F2-47A4-ACCC-E43DBA60F2EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E8D2B85A-B7F2-47A4-ACCC-E43DBA60F2EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E8D2B85A-B7F2-47A4-ACCC-E43DBA60F2EA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{1C990D41-D1C7-4D70-9474-A711FFD4ADAC} = {D752EB7F-819B-4051-9ECA-A3EAAFA70625}
+		{5AEA10C7-15A8-4FDA-9C49-9FA7069ED845} = {CC1301A5-5452-4C03-9BAD-2129AD28AC48}
+		{A7E50D88-7146-48DB-95C5-C7979FA50988} = {146275F1-2779-497D-906A-4E47A52F995B}
+		{E8D2B85A-B7F2-47A4-ACCC-E43DBA60F2EA} = {45381100-ACE8-4F75-B47D-5A0232746E79}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6DA49363-D0B5-431C-92CF-FA8BAF76AB2F}

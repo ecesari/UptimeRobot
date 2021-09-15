@@ -1,5 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using System.Net;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.Extensions.Logging;
 using SendGrid;
 using SendGrid.Helpers.Mail;
 
@@ -7,7 +9,15 @@ namespace Uptime_Robot.Services
 {
     public class EmailSender:IEmailSender
     {
-        //public EmailSender(IOptions<AuthMessageSenderOptions> optionsAccessor)
+	    private readonly ILogger<EmailSender> _logger;
+
+	    public EmailSender(ILogger<EmailSender> logger)
+	    {
+		    _logger = logger;
+	    }
+
+
+	    //public EmailSender(IOptions<AuthMessageSenderOptions> optionsAccessor)
         //{
         //    Options = optionsAccessor.Value;
         //}
@@ -21,7 +31,6 @@ namespace Uptime_Robot.Services
 
         public async Task<Response> Execute(string apiKey, string subject, string message, string email)
         {
-            //turn this into another mail service
             var client = new SendGridClient(apiKey);
             var msg = new SendGridMessage()
             {
@@ -31,13 +40,13 @@ namespace Uptime_Robot.Services
                 HtmlContent = message
             };
             msg.AddTo(new EmailAddress(email));
-            //msg.AddTo(new EmailAddress("iobojbssivqegrovat@uivvn.net"));
-
-            // Disable click tracking.
-            // See https://sendgrid.com/docs/User_Guide/Settings/tracking.html
             msg.SetClickTracking(false, false);
 
             var clientResponse = await client.SendEmailAsync(msg);
+            if (clientResponse.StatusCode != HttpStatusCode.Accepted)
+            {
+	            _logger.LogCritical("An e-mail has not been sent!", subject,message,email);
+            }
             return clientResponse;
         }
     }

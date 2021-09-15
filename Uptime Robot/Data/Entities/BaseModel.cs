@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Uptime_Robot.Data.Entities
 {
-	public class BaseModel
+	public abstract class BaseModel : IBaseModel
 	{
 
 		[Key]

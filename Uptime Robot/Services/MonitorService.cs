@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Uptime_Robot.Data;
 using Uptime_Robot.Data.Entities;
 using Uptime_Robot.Models;
@@ -24,12 +25,14 @@ namespace Uptime_Robot.Services
 	{
 		private readonly ApplicationDbContext _context;
 		private readonly IMapper _mapper;
+		private readonly ILogger<MonitorService> _logger;
 
 
-		public MonitorService(ApplicationDbContext context, IMapper mapper)
+		public MonitorService(ApplicationDbContext context, IMapper mapper, ILogger<MonitorService> logger)
 		{
 			_context = context;
 			_mapper = mapper;
+			_logger = logger;
 		}
 
 		public async Task<List<MonitorViewModel>> GetAllMonitors(string userId)
@@ -42,7 +45,7 @@ namespace Uptime_Robot.Services
 
 		public async Task<IEnumerable<MonitorViewModel>> GetAllMonitors()
 		{
-			var monitors = await _context.Monitors.Where(x=>x.IsActive).Include(x => x.Owner).AsNoTracking().ToListAsync();
+			var monitors = await _context.Monitors.Where(x => x.IsActive).Include(x => x.Owner).AsNoTracking().ToListAsync();
 			var list = monitors.Select(monitor => _mapper.Map<MonitorViewModel>(monitor)).ToList();
 			return list;
 		}
@@ -62,7 +65,7 @@ namespace Uptime_Robot.Services
 
 		public async Task<MonitorViewModel> GetMonitor(Guid id)
 		{
-			var monitor = await _context.Monitors.Include(x=>x.Logs).AsNoTracking().FirstOrDefaultAsync(m => m.Id == id);
+			var monitor = await _context.Monitors.Include(x => x.Logs).AsNoTracking().FirstOrDefaultAsync(m => m.Id == id);
 			monitor.Logs = monitor.Logs.OrderByDescending(x => x.TimeStamp).Where(x =>
 				x.TimeStamp > DateTime.Now.AddDays(-1) && x.TimeStamp <= DateTime.Now);
 			var vm = _mapper.Map<MonitorViewModel>(monitor);
@@ -82,36 +85,19 @@ namespace Uptime_Robot.Services
 			var monitor = _mapper.Map<Monitor>(monitorViewModel);
 			monitor.OwnerId = userId;
 			monitor.IsActive = true;
-			monitor.CreateDate = DateTime.Now;
 			_context.Add(monitor);
 			await _context.SaveChangesAsync();
 		}
 
 		public async Task UpdateMonitor(MonitorViewModel monitorViewModel, Guid id)
 		{
-			try
-			{
-				var monitor = await _context.Monitors.FindAsync(monitorViewModel.Id);
-				monitor.Header = monitorViewModel.Header;
-				monitor.Interval = monitorViewModel.Interval;
-				monitor.Url = monitorViewModel.Url;
-				monitor.UpdateDate = DateTime.Now;
-				_context.Update(monitor);
-				await _context.SaveChangesAsync();
-			}
-			catch (DbUpdateConcurrencyException)
-			{
-				var monitorExists = _context.Monitors.Any(e => e.Id == id);
 
-				if (!monitorExists)
-				{
-					//log
-				}
-				else
-				{
-					throw;
-				}
-			}
+			var monitor = await _context.Monitors.FindAsync(monitorViewModel.Id);
+			monitor.Header = monitorViewModel.Header;
+			monitor.Interval = monitorViewModel.Interval;
+			monitor.Url = monitorViewModel.Url;
+			_context.Update(monitor);
+			await _context.SaveChangesAsync();
 
 		}
 	}

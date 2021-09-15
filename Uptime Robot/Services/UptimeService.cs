@@ -51,46 +51,57 @@ namespace Uptime_Robot.Services
 					if (executionCount % monitor.Interval == 0)
 					{
 						var client = new HttpClient();
+						bool monitorIsUp;
+						bool monitoringSuccessful;
+
 						try
 						{
+							_logger.LogInformation("Monitoring started", monitor.Url);
+
 							var checkingResponse = await client.GetAsync(monitor.Url);
 
-							var monitorIsUp = checkingResponse.IsSuccessStatusCode;
-
-							if (!monitorIsUp)
-							{
-								await emailService.SendEmailAsync(monitor.OwnerEmail, $"{monitor.Header} is down!", $"Uh oh! It seems like your monitor is down. Your monitor named {monitor.Header} at address is down. Current time is {DateTime.Now}");
-								//send e-mail
-
-							}
+							monitorIsUp = checkingResponse.IsSuccessStatusCode;
+							monitoringSuccessful = true;
 							await dataService.AddLog(monitor.Id, monitorIsUp);
+
 						}
 						catch (Exception ex)
 						{
+							monitorIsUp = false;
+							monitoringSuccessful = false;
+
 							_logger.LogError($"There was an error trying to connect to the monitor. The exception message is: {ex.Message}", monitor.Url);
 						}
+
+						if (!monitorIsUp && monitoringSuccessful)
+						{
+							_logger.LogInformation($"{monitor.Url} owned by {monitor.OwnerEmail} is down, sending an e-mail", DateTime.Now);
+
+							try
+							{
+								await emailService.SendEmailAsync(monitor.OwnerEmail, $"{monitor.Header} is down!", $"Uh oh! It seems like your monitor is down. Your monitor named {monitor.Header} at address is down. Current time is {DateTime.Now}");
+							}
+							catch (Exception ex)
+							{
+								_logger.LogError($"There was an error trying to send an e-mail. The error message is: {ex.Message}", monitor.Url);
+
+							}
+						}
+
+
 					}
 				}
 			}
-
-
-			_logger.LogInformation(
-				"Timed Hosted Service is working. Count: {Count}", count);
 		}
 
 
 		public Task StopAsync(CancellationToken cancellationToken)
 		{
-			_logger.LogInformation("Timed Hosted Service is stopping.");
+			_logger.LogInformation("Uptime Service is stopping.");
 
 			_timer?.Change(Timeout.Infinite, 0);
 
 			return Task.CompletedTask;
-		}
-
-		public void Dispose()
-		{
-			_timer?.Dispose();
 		}
 	}
 }
