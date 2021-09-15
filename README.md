@@ -25,7 +25,8 @@ Monitor service is the layer between the controller and the database. It makes u
 
 ## EmailSender 
 Email sender is a service that handles all the e-mails. Currently it uses SendGrid as a mail delivery service. All the e-mails can be monitored on the SendGrid panel. 
-> The API key is stored in the User Secrets and can be modified by accessing the *secrets.json* file.
+> A default API Key has been added to the system. You can use and modify your own key using *User Secrets* with the title *SendGridKey* 
+> You can also modify or store keys by accessing the *secrets.json* file.
 
 # Errors
 This application is designed to continue to work even if an error is raised. The application handles the error and logs it depending on the level of the error. The application can be extended to display user-friendly e-mails after handling them or sending e-mails when a critical error is raised.
