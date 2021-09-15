@@ -3,6 +3,17 @@ A monitoring application using .Net Core MVC, Entity Framework, Microsoft Identi
 
 ![Details](https://i.ibb.co/PD8vd9B/Monitor-Details.jpg)
 
+# Installation
+You can easily install and run this app by following these instructions.
+- Clone the repository
+- Using package manager console or powershell enter Update-Database command to create the database
+
+	  Update-Database
+
+- Run the project
+- Register 
+- Add your monitors!
+
 # Technologies and Dependencies
 The project is written in **C#** with **.Net Core.**
 The database is managed with **Entity Framework Core**
@@ -31,5 +42,14 @@ Email sender is a service that handles all the e-mails. Currently it uses SendGr
 # Errors
 This application is designed to continue to work even if an error is raised. The application handles the error and logs it depending on the level of the error. The application can be extended to display user-friendly e-mails after handling them or sending e-mails when a critical error is raised.
 
+# Further Notes
+This application is a simple application and can be extended if needed. Several features could be added such as:
 
-
+- Alerting the owner when the monitor is up
+- Caching the monitors in the uptime service
+- Adding different notification providers
+- Adding graphs to display the history of the monitors
+- Check the last log before sending an e-mail to the owner to prevent spamming them at each interval
+- Add roles to have different access levels
+- Monitor logs in the UI
+- Add testing units to maintain the app
