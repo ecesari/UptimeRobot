@@ -14,6 +14,10 @@ You can easily install and run this app by following these instructions.
 
 	  Server=(localdb)\\mssqllocaldb;Database=UptimeRobotDB;Trusted_Connection=True;MultipleActiveResultSets=true
 	  
+- Add your SendGrid API key to the User Secret file with the title "SendGridKey". You can access this file by right clicking the project and choosing Manage User Secrets.
+
+![SendGridKey](https://i.ibb.co/GCP5DFr/Uptime-Robot-Key.jpg)
+
 - Run the project
 - Register 
 - Add the details of your monitor such as its interval(frequency), name and URL
