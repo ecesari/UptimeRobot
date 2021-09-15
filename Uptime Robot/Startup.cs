@@ -32,7 +32,7 @@ namespace Uptime_Robot
         {
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
+                    Configuration.GetConnectionString("DefaultConnection")), ServiceLifetime.Singleton);
 			services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
 				.AddEntityFrameworkStores<ApplicationDbContext>();
 			services.AddControllersWithViews();
@@ -88,6 +88,7 @@ namespace Uptime_Robot
             services.AddTransient<IMonitorService, MonitorService>(); 
             services.AddTransient<IEmailSender, EmailSender>();
             services.AddTransient<UserManager<ApplicationUser>>();
+            services.Configure<AuthMessageSenderOptions>(Configuration);
 
             #endregion
         }

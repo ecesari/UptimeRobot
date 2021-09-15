@@ -2,31 +2,28 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using SendGrid;
 using SendGrid.Helpers.Mail;
+using Uptime_Robot.Infrastructure;
 
 namespace Uptime_Robot.Services
 {
     public class EmailSender:IEmailSender
     {
 	    private readonly ILogger<EmailSender> _logger;
-
-	    public EmailSender(ILogger<EmailSender> logger)
+	    public AuthMessageSenderOptions Options { get; }
+	    public EmailSender(ILogger<EmailSender> logger, IOptions<AuthMessageSenderOptions> optionsAccessor)
 	    {
 		    _logger = logger;
-	    }
+		    Options = optionsAccessor.Value;
+
+        }
 
 
-	    //public EmailSender(IOptions<AuthMessageSenderOptions> optionsAccessor)
-        //{
-        //    Options = optionsAccessor.Value;
-        //}
-
-        //public AuthMessageSenderOptions Options { get; } //set only via Secret Manager
-
-        public Task SendEmailAsync(string email, string subject, string message)
+	    public Task SendEmailAsync(string email, string subject, string message)
         {
-            return Execute("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", subject, message, email);
+            return Execute(Options.SendGridKey, subject, message, email);
         }
 
         public async Task<Response> Execute(string apiKey, string subject, string message, string email)
@@ -45,7 +42,7 @@ namespace Uptime_Robot.Services
             var clientResponse = await client.SendEmailAsync(msg);
             if (clientResponse.StatusCode != HttpStatusCode.Accepted)
             {
-	            _logger.LogCritical("An e-mail has not been sent!", subject,message,email);
+	            _logger.LogError("An e-mail has not been sent!", subject,message,email);
             }
             return clientResponse;
         }
