@@ -75,8 +75,9 @@ namespace Uptime_Robot.Services
 		public async Task<MonitorViewModel> GetMonitor(Guid id)
 		{
 			//Filter logs to get the logs of the last 24 hours
-			var monitor = await _context.Monitors.Include(x => x.Logs.Where(y =>
-				y.TimeStamp > DateTime.Now.AddDays(-1) && y.TimeStamp <= DateTime.Now)).AsNoTracking().FirstOrDefaultAsync(m => m.Id == id);
+			var monitor = await _context.Monitors.Include(x => x.Logs).AsNoTracking().FirstOrDefaultAsync(m => m.Id == id);
+			//get the logs of the last 24 hours
+			monitor.Logs = monitor.Logs.Where(y => y.TimeStamp > DateTime.Now.AddDays(-1) && y.TimeStamp <= DateTime.Now);
 			if (!MonitorExists(monitor)) return null;
 			var vm = _mapper.Map<MonitorViewModel>(monitor);
 			return vm;
