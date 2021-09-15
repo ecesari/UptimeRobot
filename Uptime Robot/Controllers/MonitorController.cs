@@ -57,7 +57,6 @@ namespace Uptime_Robot.Controllers
 		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> Create([Bind("Id,Header,Url,Interval")] MonitorViewModel monitor)
 		{
-			//TODO:add validation
 			if (ModelState.IsValid)
 			{
 				var userId = (await _userManager.GetUserAsync(User)).Id;
