@@ -36,8 +36,6 @@ namespace Uptime_Robot.Services
 		//Check all monitors according to their interval, send notifications if necessary
 		private async void DoWork(object state)
 		{
-			//TODO:cachele => cacheteki monitörlerin son updatedatei ve cachein updatdateini al karşılaştır
-
 			using (var scope = _serviceProvider.CreateScope())
 			{
 				var dataService = scope.ServiceProvider.GetService<IMonitorService>();

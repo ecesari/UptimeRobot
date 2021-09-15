@@ -18,4 +18,8 @@
     <ProjectReference Include="..\Uptime Robot\Uptime Robot.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Identity\" />
+  </ItemGroup>
+
 </Project>
