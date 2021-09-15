@@ -24,7 +24,8 @@ Uptime Service is a hosted service that works minutely. Each minute it iterates 
 Monitor service is the layer between the controller and the database. It makes use of the **AutoMapper** package to map entities and viewmodels. 
 
 ## EmailSender 
-Email sender is a service that handles all the e-mails. Currently it uses SendGrid as a mail delivery service. All the e-mails can be monitored on the SendGrid panel.
+Email sender is a service that handles all the e-mails. Currently it uses SendGrid as a mail delivery service. All the e-mails can be monitored on the SendGrid panel. 
+> The API key is stored in the User Secrets and can be modified by accessing the *secrets.json* file.
 
 # Errors
 This application is designed to continue to work even if an error is raised. The application handles the error and logs it depending on the level of the error. The application can be extended to display user-friendly e-mails after handling them or sending e-mails when a critical error is raised.
